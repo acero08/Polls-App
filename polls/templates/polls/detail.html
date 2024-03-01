@@ -1,0 +1,46 @@
+{% extends "polls/base.html" %}
+{% load static %}
+{% block title %}DETAIL{% endblock %}
+{% block content %}
+<!-- Provided navbar with modified text -->
+<nav class="navbar bg-body-tertiary">
+  <div class="container-fluid">
+    <span class="navbar-brand mb-0 h1">Which do you prefer?</span>
+  </div>
+</nav>
+
+<form action="{% url 'polls:vote' question.id %}" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <legend><h1>{{ question.question_text }}</h1></legend>
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        <!-- Replaced radio buttons with select element -->
+        <select class="form-select" size="3" aria-label="Size 3 select example" name="choice">
+            {% for choice in question.choice_set.all %}
+                <option value="{{ choice.id }}">{{ choice.choice_text }}</option>
+            {% endfor %}
+        </select>
+    </fieldset>
+
+    <div class="row">
+        <div class="col-md-6">
+            <button type="submit" class="btn btn-primary btn-sm mr-2">Vote</button>
+            <a href="{% url 'polls:question_list' %}" class="btn btn-secondary btn-sm">Edit</a>
+        </div>
+    </div>
+</form>
+
+
+
+
+{% endblock %}
+
+
+<!-- {{question}}
+
+<h1>{{ question.question_text }}</h1>
+<ul>
+{% for choice in question.choice_set.all %}
+    <li>{{ choice.choice_text }}</li>
+{% endfor %}
+</ul> -->

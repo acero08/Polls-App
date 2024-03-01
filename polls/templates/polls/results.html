@@ -1,0 +1,126 @@
+{% extends "polls/base.html" %}
+{% load static %}
+{% block title %}RESULTS{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>{{ question.question_text }}</h1>
+    <canvas id="myChart"></canvas> <!-- Canvas for the chart -->
+    <table class="table table-primary">
+        <thead>
+            <tr>
+                <th>Choice</th>
+                <th>Votes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for choice in question.choice_set.all %}
+            <tr>
+                <td>{{ choice.choice_text }}</td>
+                <td>{{ choice.votes }} vote{{ choice.votes|pluralize }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-primary"><a href="{% url 'polls:detail' question.id %}" style="text-decoration: none; color: inherit;">Vote again?</a></button>
+</div>
+
+<script>
+    const labels = [
+        {% for choice in question.choice_set.all %}
+            "{{ choice.choice_text }}",
+        {% endfor %}
+    ];
+
+    const data = {
+        labels: labels,
+        datasets: [{
+            label: 'Votes',
+            data: [
+                {% for choice in question.choice_set.all %}
+                    {{ choice.votes }},
+                {% endfor %}
+            ],
+            backgroundColor: [ // Specify colors here
+                'rgba(255, 99, 132, 0.2)', // Color for the first label
+                'rgba(54, 162, 235, 0.2)', // Color for the second label
+                'rgba(67, 0, 108, 0.2)', // Color for the third label
+                // Add more colors as needed for additional labels
+            ],
+            borderColor: [ // Border colors (optional)
+                'rgba(255, 99, 132, 1)', // Border color for the first label
+                'rgba(54, 162, 235, 1)', // Border color for the second label
+                'rgba(67, 0, 108, 1)', // Border color for the third label
+                // Add more border colors as needed for additional labels
+            ],
+            borderWidth: 1 // Border width (optional)
+
+            
+        }]
+    };
+
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+            
+        },
+    };
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, config);
+</script>
+
+
+{% endblock %}
+
+
+
+<!-- NO BOOTSTRAP -->
+
+<!-- <h1>{{ question.question_text }}</h1>
+
+<ul>
+{% for choice in question.choice_set.all %}
+    <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+{% endfor %}
+</ul> -->
+
+
+{% comment %} CON PUSH {% endcomment %}
+{% comment %} <script>
+    const labels = []; // Labels for each choice
+    const data = []; // Number of votes for each choice
+
+    // Extract data from Django template
+    {% for choice in question.choice_set.all %}
+        labels.push("{{ choice.choice_text }}");
+        data.push("{{ choice.votes }}");
+    {% endfor %}
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Votes',
+                data: data,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)', // Background color
+                borderColor: 'rgba(255, 99, 132, 1)', // Border color
+                borderWidth: 1 // Border width
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script> {% endcomment %}

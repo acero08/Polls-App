@@ -1,0 +1,38 @@
+{% extends "polls/base.html" %}
+{% load static %}
+{% block title %}LIST{% endblock %}
+{% block content %}
+
+<ul>
+    {% for question in question_list %}
+    <li>
+        <a href="{% url 'polls:detail' question.id %}">
+            <span>{{ forloop.counter }}. {{ question.question_text }}</span>
+        </a>
+        <a href="{% url 'polls:question_update' question.id %}" class="btn btn-outline-primary btn-sm">Edit Question</a>
+        <a href="{% url 'polls:question_delete' question.id %}" class="btn btn-outline-danger btn-sm">Delete Question</a>
+
+        <ul>
+            {% for choice in question.choice_set.all %}
+            <li>
+                {{ choice.choice_text }}
+        <a href="{% url 'polls:choice_update' choice.id %}" class="btn btn-outline-secondary btn-sm">Update Choice</a>
+        <a href="{% url 'polls:choice_delete' choice.id %}" class="btn btn-outline-danger btn-sm">Delete Choice</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </li>
+    {% endfor %}
+    <li>
+        <a href="{% url 'polls:question_create' %}" class="btn btn-outline-primary btn-sm">Add Question</a>
+        <a href="{% url 'polls:index' %}" class="btn btn-outline-secondary btn-sm">Done</a>
+    </li>
+    
+</ul>
+{% endblock %}
+
+
+
+{% comment %} BUTTON  {% endcomment %}
+{% comment %} <li><button type="button" class="btn btn-outline-primary btn-sm" onclick="window.location.href='{% url 'polls:index' %}'">index</button></li> {% endcomment %}
+
