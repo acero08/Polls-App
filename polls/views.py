@@ -13,7 +13,8 @@ class QuestionCreateView(CreateView):
     model = Question
     fields = ['pub_date', 'question_text']
     template_name = 'polls/question_form.html'  
-    success_url = reverse_lazy('polls:index')  
+    success_url = reverse_lazy('polls:index') 
+
     def get_initial(self):
         initial = super().get_initial()
         initial['pub_date'] = timezone.now()  
@@ -26,31 +27,47 @@ class QuestionUpdateView( PermissionRequiredMixin ,UpdateView):
     success_url = reverse_lazy('polls:question_list') 
     permission_required = 'polls.change_question'
 
-class QuestionDeleteView(DeleteView):
+class QuestionDeleteView(PermissionRequiredMixin, DeleteView):
     model = Question
     template_name = 'polls/question_delete.html'  
     success_url = reverse_lazy('polls:index')  
+    permission_required = 'polls.delete_question'
 
 class ChoiceCreateView(CreateView):
     model = Choice
+    fields = ['choice_text']
     template_name = 'polls/choice_form.html' 
-    success_url = reverse_lazy('polls:index')  
+    permission_required = 'polls.add_choice'
 
-class ChoiceUpdateView(UpdateView):
+    def form_valid(self, form):
+        # Get the question object corresponding to the question_id from URL
+        question = get_object_or_404(Question, pk=self.kwargs['question_id'])
+        # Assign the question to the choice being created
+        form.instance.question = question
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        # Redirect back to the detail view of the question
+        return reverse_lazy('polls:detail', kwargs={'pk': self.kwargs['question_id']})
+
+
+class ChoiceUpdateView(PermissionRequiredMixin, UpdateView):
     model = Choice
     fields = ['choice_text']
     template_name = 'polls/choice_update.html'  
     success_url = reverse_lazy('polls:question_list')  
+    permission_required = 'polls.change_choice'
 
-class ChoiceDeleteView(DeleteView):
+class ChoiceDeleteView(PermissionRequiredMixin, DeleteView):
     model = Choice
     template_name = 'polls/choice_delete.html'  
     success_url = reverse_lazy('polls:index')
+    permission_required = 'polls.delete_choice'
 
-class QuestionList(ListView):
+class QuestionList(PermissionRequiredMixin, ListView):
     model = Question
     template_name = 'polls/list.html'
-    
+    permission_required = 'polls.view_question'
 
 
 

@@ -2,10 +2,10 @@
 {% load static %}
 {% block title %}DETAIL{% endblock %}
 {% block content %}
-<!-- Provided navbar with modified text -->
+
 <nav class="navbar bg-body-tertiary">
   <div class="container-fluid">
-    <span class="navbar-brand mb-0 h1">Which do you prefer?</span>
+    <span class="navbar-brand mb-0 h1">My First Polls App</span>
   </div>
 </nav>
 
@@ -24,8 +24,10 @@
 
     <div class="row">
         <div class="col-md-6">
-            <button type="submit" class="btn btn-primary btn-sm mr-2">Vote</button>
-            <a href="{% url 'polls:question_list' %}" class="btn btn-secondary btn-sm">Edit</a>
+            <button type="submit" class="btn btn-primary btn-sm mr-2">Vote</button>   
+         {% if perms.foo %}
+            <a href="{% url 'polls:question_list'  %}" class="btn btn-secondary btn-sm">Edit</a>
+        {% endif %} 
         </div>
     </div>
 </form>

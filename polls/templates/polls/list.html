@@ -11,22 +11,31 @@
         </a>
         <a href="{% url 'polls:question_update' question.id %}" class="btn btn-outline-primary btn-sm">Edit Question</a>
         <a href="{% url 'polls:question_delete' question.id %}" class="btn btn-outline-danger btn-sm">Delete Question</a>
-
+      
         <ul>
+           
             {% for choice in question.choice_set.all %}
             <li>
                 {{ choice.choice_text }}
         <a href="{% url 'polls:choice_update' choice.id %}" class="btn btn-outline-secondary btn-sm">Update Choice</a>
         <a href="{% url 'polls:choice_delete' choice.id %}" class="btn btn-outline-danger btn-sm">Delete Choice</a>
+        
             </li>
             {% endfor %}
+            
+            <div>
+                <a href="{% url 'polls:choice_create' question.id %}" class="btn btn-outline-success btn-sm">Add Choice</a>
+            </div>
+            
         </ul>
     </li>
+   
     {% endfor %}
-    <li>
+
+    <div>
         <a href="{% url 'polls:question_create' %}" class="btn btn-outline-primary btn-sm">Add Question</a>
         <a href="{% url 'polls:index' %}" class="btn btn-outline-secondary btn-sm">Done</a>
-    </li>
+    </div>
     
 </ul>
 {% endblock %}
