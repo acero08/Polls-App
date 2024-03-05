@@ -64,12 +64,16 @@ class ChoiceDeleteView(PermissionRequiredMixin, DeleteView):
     success_url = reverse_lazy('polls:index')
     permission_required = 'polls.delete_choice'
 
-class QuestionList(PermissionRequiredMixin, ListView):
+class QuestionList(ListView):
     model = Question
     template_name = 'polls/list.html'
-    permission_required = 'polls.view_question'
 
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Get the last visited question
+        current_question = Question.objects.last()
+        context['current_question'] = current_question
+        return context
 
 
 """ ----------------------------------------------------------------------------------------------------------------------------------------------------- """

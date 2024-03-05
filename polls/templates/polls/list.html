@@ -3,28 +3,50 @@
 {% block title %}LIST{% endblock %}
 {% block content %}
 
+<div class="row">
+    <div class="col">
+
+
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'polls:index' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'polls:detail' current_question.pk %}">Question</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+    </ol>
+</nav>
+
+
+
 <ul>
     {% for question in question_list %}
     <li>
         <a href="{% url 'polls:detail' question.id %}">
             <span>{{ forloop.counter }}. {{ question.question_text }}</span>
         </a>
-        <a href="{% url 'polls:question_update' question.id %}" class="btn btn-outline-primary btn-sm">Edit Question</a>
-        <a href="{% url 'polls:question_delete' question.id %}" class="btn btn-outline-danger btn-sm">Delete Question</a>
+        {% comment %} ADD QUESTION {% endcomment %}
+        <a href="{% url 'polls:question_create' %}" class="btn btn-primary btn-sm"><i class="bi bi-plus"></i></a>
+        {% comment %} EDIT QUESTION {% endcomment %}
+        <a href="{% url 'polls:question_update' question.id %}" class="btn btn-dark-sm" ><i class="bi bi-pencil"></i></a>
+        {% comment %} QUESTION DELETE {% endcomment %}
+        <a href="{% url 'polls:question_delete' question.id %}" class="btn btn-dark-sm" ><i class="bi bi-trash"></i>
+        </a>
+        
       
         <ul>
            
             {% for choice in question.choice_set.all %}
             <li>
                 {{ choice.choice_text }}
-        <a href="{% url 'polls:choice_update' choice.id %}" class="btn btn-outline-secondary btn-sm">Update Choice</a>
-        <a href="{% url 'polls:choice_delete' choice.id %}" class="btn btn-outline-danger btn-sm">Delete Choice</a>
+                {% comment %} UPDATE CHOICE {% endcomment %}
+        <a href="{% url 'polls:choice_update' choice.id %}" class="btn btn-dark-sm"><i class="bi bi-pencil"></i></a>
+        {% comment %} DELETE CHOICE {% endcomment %}
+        <a href="{% url 'polls:choice_delete' choice.id %}" class="btn btn-dark-sm" ><i class="bi bi-trash"></i></a>
         
             </li>
             {% endfor %}
-            
+
             <div>
-                <a href="{% url 'polls:choice_create' question.id %}" class="btn btn-outline-success btn-sm">Add Choice</a>
+                <a href="{% url 'polls:choice_create' question.id %}" class="btn btn-success btn-sm"><i class="bi bi-plus-square"></i></a>
             </div>
             
         </ul>
@@ -32,11 +54,15 @@
    
     {% endfor %}
 
-    <div>
-        <a href="{% url 'polls:question_create' %}" class="btn btn-outline-primary btn-sm">Add Question</a>
-        <a href="{% url 'polls:index' %}" class="btn btn-outline-secondary btn-sm">Done</a>
+    <div class="container">
+        <div class="row justify">
+            <div class="col-auto mb-3">
+                <a href="{% url 'polls:index' %}" class="btn btn-secondary"><i class="bi bi-check-square-fill"></i> Done</a>
+            </div>
+        </div>
     </div>
-    
+
+
 </ul>
 {% endblock %}
 
@@ -45,3 +71,5 @@
 {% comment %} BUTTON  {% endcomment %}
 {% comment %} <li><button type="button" class="btn btn-outline-primary btn-sm" onclick="window.location.href='{% url 'polls:index' %}'">index</button></li> {% endcomment %}
 
+{% comment %} BOTON VIEJO {% endcomment %}
+{% comment %} <a href="{% url 'polls:question_update' question.id %}" class="btn btn-outline-primary btn-sm">Edit Question</a> {% endcomment %}

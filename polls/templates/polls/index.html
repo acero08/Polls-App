@@ -2,9 +2,13 @@
 {% load static %}
 {% block title %}INDEX{% endblock %}
 {% block content %}
-<div>
-    <a href="{% url 'polls:question_create' %}" class="btn btn-primary">Create New Question</a>
-</div>
+
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Home</li>
+    </ol>
+  </nav>
+
 {% if latest_question_list %}
     <ul class="nav nav-tabs">
         {% for question in latest_question_list %}
@@ -16,4 +20,8 @@
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
+
+
 {% endblock %}
+
+

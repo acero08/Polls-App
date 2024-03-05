@@ -3,6 +3,13 @@
 {% block title %}DETAIL{% endblock %}
 {% block content %}
 
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'polls:index' %}">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Question</li>
+    </ol>
+  </nav>
+
 <nav class="navbar bg-body-tertiary">
   <div class="container-fluid">
     <span class="navbar-brand mb-0 h1">My First Polls App</span>
@@ -15,7 +22,7 @@
         <legend><h1>{{ question.question_text }}</h1></legend>
         {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
         <!-- Replaced radio buttons with select element -->
-        <select class="form-select" size="3" aria-label="Size 3 select example" name="choice">
+        <select class="form-select" size="8" aria-label="Size 8 select example" name="choice">
             {% for choice in question.choice_set.all %}
                 <option value="{{ choice.id }}">{{ choice.choice_text }}</option>
             {% endfor %}
